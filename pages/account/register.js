@@ -3,13 +3,14 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { useContext, useEffect, useState } from "react";
 
-// import AuthContext from "@/context/AuthContext";
+import AuthContext from "@/context/AuthContext";
 import { FaUser } from "react-icons/fa";
 import Layout from "@/components/Layout";
 import Link from "next/link";
 import styles from "@/styles/AuthForm.module.css";
 
 export default function LoginPage() {
+  const { register, error } = useContext(AuthContext);
   const [username, setUserName] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [email, setEmail] = useState("");
@@ -21,8 +22,7 @@ export default function LoginPage() {
       toast.error("Passwords do not match");
       return;
     }
-    // login({ email, password })
-    console.log("formData: ", username, email, password);
+    register({ username, email, password });
   };
   return (
     <Layout title="User Registration">
@@ -70,7 +70,7 @@ export default function LoginPage() {
             />
           </div>
 
-          <input type="submit" value="Login" className="btn" />
+          <input type="submit" value="Register" className="btn" />
         </form>
 
         <p>
