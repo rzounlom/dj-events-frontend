@@ -5,11 +5,12 @@ import { ToastContainer, toast } from "react-toastify";
 import { API_URL } from "@/config/index";
 import Layout from "@/components/Layout";
 import Link from "next/link";
+import { parseCookies } from "@/helpers/index";
 import styles from "@/styles/Form.module.css";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-export default function AddEventPage() {
+export default function AddEventPage({ token }) {
   const [values, setValues] = useState({
     name: "",
     performers: "",
@@ -26,6 +27,7 @@ export default function AddEventPage() {
   };
 
   const router = useRouter();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -43,7 +45,7 @@ export default function AddEventPage() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(values),
     });
@@ -145,4 +147,14 @@ export default function AddEventPage() {
       </form>
     </Layout>
   );
+}
+
+export async function getServerSideProps({ req }) {
+  const { token } = parseCookies(req);
+
+  return {
+    props: {
+      token,
+    },
+  };
 }

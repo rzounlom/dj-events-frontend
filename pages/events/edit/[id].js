@@ -10,11 +10,12 @@ import Layout from "@/components/Layout";
 import Link from "next/link";
 import Modal from "@/components/Modal";
 import moment from "moment";
+import { parseCookies } from "@/helpers/index";
 import styles from "@/styles/Form.module.css";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-export default function EditEventPage({ evt }) {
+export default function EditEventPage({ evt, token }) {
   const { name, performers, venue, address, date, time, description } = evt;
   const [values, setValues] = useState({
     name,
@@ -62,7 +63,7 @@ export default function EditEventPage({ evt }) {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        // Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(values),
     });
@@ -192,16 +193,15 @@ export default function EditEventPage({ evt }) {
 }
 
 export async function getServerSideProps({ params: { id }, req }) {
-  // const { token } = parseCookies(req)
+  const { token } = parseCookies(req);
 
   const res = await fetch(`${API_URL}/events/${id}`);
   const evt = await res.json();
 
-  console.log(req.headers);
   return {
     props: {
       evt,
-      // token,
+      token,
     },
   };
 }
