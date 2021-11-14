@@ -16,6 +16,10 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  useEffect(() => {
+    if (error) toast.error(error);
+  }, [error]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     if (password !== passwordConfirm) {
@@ -23,6 +27,10 @@ export default function LoginPage() {
       return;
     }
     register({ username, email, password });
+    setUserName("");
+    setEmail("");
+    setPassword("");
+    setPasswordConfirm("");
   };
   return (
     <Layout title="User Registration">
